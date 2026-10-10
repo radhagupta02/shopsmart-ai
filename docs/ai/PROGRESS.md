@@ -3,6 +3,7 @@
 ## Decisions
 (date - decision - why)  Record here: OQ answers, provider + embedding dimension, Node/Express versions, JWT lifetime, final confidence thresholds, signed-off [PROPOSED] items.
 - 2026-10-10 - Node v22.19.0, npm 10.9.3 confirmed on dev machine.
+- 2026-10-10 - Home page "Trending" row uses GET /products?sort=rating until the team decides otherwise.
 
 ## Open questions (copy of the pack's section 1.3; mark each ANSWERED with the date)
 - [ ] OQ-1 Node/Express accepted by organizers
@@ -39,7 +40,7 @@
 - [x] P0-B mocks and fixtures (Dev B) — All CONTRACT section 5 endpoints implemented with exact shapes, AI hero/vague and RAG responses verified, 54/54 checks passed, build passes.
 - [ ] P0-C backend scaffold and schema (Dev C)
 - [ ] P0-D pgvector and AI client spike (Dev D)
-- [ ] A1 UI kit, layout, login, Home, Products (Dev A)
+- [x] A1 UI kit, layout, login, Home, Products (Dev A) — Button/Input/Badge/Modal/Skeleton/EmptyState/Pagination/ErrorState, Header & Layout, Login with 4 quick-logins, Home with hero/categories/recommended/trending, Products with filter drawer & compare bar. Build passes.
 - [ ] B1 assistant UI on mocks (Dev B)
 - [ ] C1 seed, auth, catalog APIs (Dev C)
 - [ ] D1 ingestion and documents API (Dev D)
@@ -60,5 +61,5 @@
 - [ ] OPT-OPS optional ops dashboard / low-stock agent (only if ahead)
 
 ## Current focus per dev
-A: P0-A done, ready for A1   B: P0-B done, ready for B1   C: -   D: -
+A: A1 done, ready for A2   B: P0-B done, ready for B1   C: -   D: -
 

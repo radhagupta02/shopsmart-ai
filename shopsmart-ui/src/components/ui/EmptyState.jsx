@@ -1,57 +1,47 @@
+import React from 'react';
+
 /**
- * EmptyState placeholder shown on routes that will be built in later phases.
- * @param {Object} props
- * @param {string} props.title - page title
- * @param {string} props.phase - phase ID (e.g. 'A1')
- * @param {string} [props.description] - optional description
+ * Reusable EmptyState component per AGENTS.md.
+ * Displays when a query returns no results, wishlist is empty, or preferences are not set.
  */
-export default function EmptyState({ title, phase, description }) {
+export default function EmptyState({
+  title,
+  description,
+  icon = null,
+  action = null,
+  phase = null,
+  className = '',
+}) {
+  const displayTitle = title || (phase ? `Phase ${phase}` : 'No items found');
+  const displayDescription =
+    description || (phase ? `Coming in phase ${phase}` : 'There are no items matching your criteria.');
+
   return (
     <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '60vh',
-        textAlign: 'center',
-        padding: '2rem',
-      }}
+      className={`flex flex-col items-center justify-center text-center py-16 px-6 max-w-md mx-auto ${className}`}
+      role="status"
     >
-      <div
-        style={{
-          width: '64px',
-          height: '64px',
-          borderRadius: '50%',
-          backgroundColor: 'var(--color-primary-light)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: '1.5rem',
-          fontSize: '1.75rem',
-        }}
-      >
-        🚧
+      <div className="w-16 h-16 rounded-2xl bg-[var(--color-primary-light)] text-[var(--color-primary)] flex items-center justify-center mb-5 text-2xl shadow-xs">
+        {icon || (
+          <svg className="w-8 h-8 text-[var(--color-primary)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+          </svg>
+        )}
       </div>
-      <h1
-        style={{
-          fontSize: '1.5rem',
-          fontWeight: 700,
-          color: 'var(--color-slate-900)',
-          margin: '0 0 0.5rem',
-        }}
-      >
-        {title}
-      </h1>
-      <p
-        style={{
-          fontSize: '0.875rem',
-          color: 'var(--color-slate-500)',
-          margin: 0,
-        }}
-      >
-        {description || `Coming in phase ${phase}`}
+
+      <h3 className="text-lg font-bold text-[var(--color-slate-900)] mb-2">
+        {displayTitle}
+      </h3>
+
+      <p className="text-sm text-[var(--color-slate-500)] mb-6 max-w-sm">
+        {displayDescription}
       </p>
+
+      {action && (
+        <div className="flex items-center gap-3">
+          {action}
+        </div>
+      )}
     </div>
   );
 }
