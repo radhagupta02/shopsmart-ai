@@ -52,7 +52,7 @@
 - [x] P0-D pgvector and AI client spike (Dev D)
 - [ ] A1 UI kit, layout, login, Home, Products (Dev A)
 - [ ] B1 assistant UI on mocks (Dev B)
-- [ ] C1 seed, auth, catalog APIs (Dev C)
+- [x] C1 seed, auth, catalog APIs (Dev C)
 - [ ] D1 ingestion and documents API (Dev D)
 - [ ] SYNC lunch sync (all)
 - [ ] A2 product detail, cart, wishlist (Dev A)

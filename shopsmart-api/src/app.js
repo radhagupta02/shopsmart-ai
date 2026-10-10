@@ -14,10 +14,11 @@ app.use((req, res, next) => {
   next();
 });
 
+import authRouter from './routes/auth.js';
+import productsRouter from './routes/products.js';
+import categoriesRouter from './routes/categories.js';
+
 // Empty routers for now
-const authRouter = express.Router();
-const productsRouter = express.Router();
-const categoriesRouter = express.Router();
 const cartRouter = express.Router();
 const wishlistRouter = express.Router();
 const ordersRouter = express.Router();
