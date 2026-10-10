@@ -80,3 +80,41 @@ INSERT INTO products (id, name, category_id, brand, description, price, rating, 
   ('BOK104', 'The Pragmatic Programmer', 8, 'Addison-Wesley', 'Coding best practices.', 40.00, 4.9, 25, '{}', ARRAY['https://picsum.photos/400?random=34']),
   ('BOK105', 'Clean Code', 8, 'Prentice Hall', 'Writing better software.', 35.00, 4.6, 2, '{}', ARRAY['https://picsum.photos/400?random=35']) -- low stock
 ON CONFLICT DO NOTHING;
+
+-- Seeded Orders (prime@demo.com: DELIVERED with LAP101, SHIPPED, PLACED; basic@demo.com: SHIPPED)
+INSERT INTO orders (id, user_id, status, total, shipping_estimate, created_at) VALUES
+  ('ORD-000001', '22222222-2222-2222-2222-222222222222', 'DELIVERED', 899.00, 0.00, NOW() - INTERVAL '5 days'),
+  ('ORD-000002', '22222222-2222-2222-2222-222222222222', 'SHIPPED', 450.00, 0.00, NOW() - INTERVAL '2 days'),
+  ('ORD-000003', '22222222-2222-2222-2222-222222222222', 'PLACED', 120.00, 0.00, NOW() - INTERVAL '1 hour'),
+  ('ORD-000004', '11111111-1111-1111-1111-111111111111', 'SHIPPED', 950.00, 0.00, NOW() - INTERVAL '3 days')
+ON CONFLICT DO NOTHING;
+
+INSERT INTO order_items (order_id, product_id, quantity, unit_price) VALUES
+  ('ORD-000001', 'LAP101', 1, 899.00),
+  ('ORD-000002', 'LAP201', 1, 450.00),
+  ('ORD-000003', 'SHO101', 1, 120.00),
+  ('ORD-000004', 'LAP102', 1, 950.00)
+ON CONFLICT DO NOTHING;
+
+-- Mock events for these orders to ensure the API resolves their status correctly
+INSERT INTO order_events (order_id, status, note, event_time) VALUES
+  -- ORD-1 (DELIVERED)
+  ('ORD-000001', 'PLACED', 'Order placed successfully', NOW() - INTERVAL '5 days'),
+  ('ORD-000001', 'PACKED', 'Order packed', NOW() - INTERVAL '4 days 23 hours'),
+  ('ORD-000001', 'SHIPPED', 'Order shipped', NOW() - INTERVAL '4 days 18 hours'),
+  ('ORD-000001', 'OUT_FOR_DELIVERY', 'Order out for delivery', NOW() - INTERVAL '4 days'),
+  ('ORD-000001', 'DELIVERED', 'Order delivered', NOW() - INTERVAL '3 days 18 hours'),
+  
+  -- ORD-2 (SHIPPED)
+  ('ORD-000002', 'PLACED', 'Order placed successfully', NOW() - INTERVAL '2 days'),
+  ('ORD-000002', 'PACKED', 'Order packed', NOW() - INTERVAL '1 day 23 hours'),
+  ('ORD-000002', 'SHIPPED', 'Order shipped', NOW() - INTERVAL '1 day 18 hours'),
+  
+  -- ORD-3 (PLACED)
+  ('ORD-000003', 'PLACED', 'Order placed successfully', NOW() - INTERVAL '1 hour'),
+  
+  -- ORD-4 (SHIPPED)
+  ('ORD-000004', 'PLACED', 'Order placed successfully', NOW() - INTERVAL '3 days'),
+  ('ORD-000004', 'PACKED', 'Order packed', NOW() - INTERVAL '2 days 23 hours'),
+  ('ORD-000004', 'SHIPPED', 'Order shipped', NOW() - INTERVAL '2 days 18 hours')
+ON CONFLICT DO NOTHING;

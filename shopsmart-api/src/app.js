@@ -19,11 +19,10 @@ import productsRouter from './routes/products.js';
 import categoriesRouter from './routes/categories.js';
 import documentsRouter from './routes/documents.js';
 
-// Empty routers for now
-const cartRouter = express.Router();
-const wishlistRouter = express.Router();
-const ordersRouter = express.Router();
-const preferencesRouter = express.Router();
+import cartRouter from './routes/cart.js';
+import wishlistRouter from './routes/wishlist.js';
+import ordersRouter from './routes/orders.js';
+import preferencesRouter from './routes/preferences.js';
 const assistantRouter = express.Router();
 const aiLogsRouter = express.Router();
 
@@ -33,7 +32,7 @@ app.use('/api/categories', categoriesRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/wishlist', wishlistRouter);
 app.use('/api/orders', ordersRouter);
-app.use('/api/preferences', preferencesRouter);
+app.use('/api/users', preferencesRouter);
 app.use('/api/assistant', assistantRouter);
 app.use('/api/documents', documentsRouter);
 app.use('/api/aiLogs', aiLogsRouter);

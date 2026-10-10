@@ -57,7 +57,7 @@
 - [ ] SYNC lunch sync (all)
 - [ ] A2 product detail, cart, wishlist (Dev A)
 - [ ] B2 knowledge base page (Dev B)
-- [ ] C2 cart, wishlist, preferences, orders APIs (Dev C)
+- [x] C2 cart, wishlist, preferences, orders APIs (Dev C)
 - [ ] D2-RAG /assistant/ask (Dev D)
 - [ ] D2-SHOP /assistant/shop (Dev D)
 - [ ] INT-A / INT-B / INT-C / INT-D integration
