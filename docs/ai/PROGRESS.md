@@ -73,9 +73,9 @@
 - [x] D2-RAG /assistant/ask (Dev D)
 - [x] D2-SHOP /assistant/shop (Dev D)
 - [ ] INT-A / INT-B / INT-C / INT-D integration
-- [ ] B3 compare, orders timeline, AI log (Dev B)
+- [x] B3 compare, orders timeline, AI log (Dev B) — ComparePage, OrdersPage, OrderDetailPage, AiLogPage implemented.
 - [x] D3-ROUTER intent router and order-status tool (Dev D)
-- [ ] PX-PROFILE preferences page (owner per OQ-4)
+- [x] PX-PROFILE preferences page (owner per OQ-4) - Dev B
 - [ ] QA bug bash (all)
 - [ ] C3 demo data, reset, backup video (Dev C)
 - [ ] D3-DOCS README, architecture diagram (Dev D)
@@ -83,5 +83,5 @@
 - [ ] OPT-OPS optional ops dashboard / low-stock agent (only if ahead)
 
 ## Current focus per dev
-A: A2 done, ready for INT-A   B: B2 done, ready for B3   C: -   D: -
+A: A2 done, ready for INT-A   B: PX-PROFILE done, ready for QA   C: -   D: -
 
