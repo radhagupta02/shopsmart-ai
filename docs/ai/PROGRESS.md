@@ -18,8 +18,8 @@
 - [x] OQ-2 LLM + embedding provider, API key holder, embedding dimension N
 - [ ] OQ-3 Demo local or deployed
 - [ ] OQ-4 Scope sign-off and Profile page owner
-- [ ] OQ-5 How the UI reaches the intent router
-- [ ] OQ-6 Order-status tool shape and trigger
+- [x] OQ-5 How the UI reaches the intent router (2026-10-10: POST /assistant/chat endpoint approved and built)
+- [x] OQ-6 Order-status tool shape and trigger (2026-10-10: tool deployed inside router)
 - [ ] OQ-7 Laptop Return Policy preloaded or uploaded live
 - [ ] OQ-8 Automated tests: yes or no
 - [x] OQ-9 Versions (Node, Express, Postgres image tag)
@@ -74,7 +74,7 @@
 - [x] D2-SHOP /assistant/shop (Dev D)
 - [ ] INT-A / INT-B / INT-C / INT-D integration
 - [ ] B3 compare, orders timeline, AI log (Dev B)
-- [ ] D3-ROUTER intent router and order-status tool (Dev D)
+- [x] D3-ROUTER intent router and order-status tool (Dev D)
 - [ ] PX-PROFILE preferences page (owner per OQ-4)
 - [ ] QA bug bash (all)
 - [ ] C3 demo data, reset, backup video (Dev C)

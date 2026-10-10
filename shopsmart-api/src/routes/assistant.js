@@ -24,7 +24,19 @@ const shopSchema = {
   })
 };
 
+const chatSchema = {
+  body: z.object({
+    message: z.string().min(1).max(1000),
+    history: z.array(z.object({
+      role: z.enum(['user', 'assistant']),
+      content: z.string()
+    })).optional(),
+    region: z.string().optional()
+  })
+};
+
 router.post('/ask', validate(askSchema), assistantController.askPolicy);
 router.post('/shop', validate(shopSchema), assistantController.shop);
+router.post('/chat', validate(chatSchema), assistantController.chat);
 
 export default router;
