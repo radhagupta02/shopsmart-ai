@@ -4,11 +4,16 @@ import { env } from './env.js';
 import { logger } from '../utils/logger.js';
 
 const pool = new pg.Pool({
-  connectionString: env.DATABASE_URL
+  connectionString: env.DATABASE_URL,
+  onConnect: async (client) => {
+    try {
+      await client.query('CREATE EXTENSION IF NOT EXISTS vector;');
+      await pgvector.registerTypes(client);
+    } catch (err) {
+      logger.warn('Could not register vector extension or types', err);
+    }
+  }
 });
-
-// Await pgvector registration globally on the pool to avoid concurrent query race conditions on connect
-await pgvector.registerType(pool);
 
 pool.on('error', (err) => {
   logger.error('Unexpected error on idle client', err);

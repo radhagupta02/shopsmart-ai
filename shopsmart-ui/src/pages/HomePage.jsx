@@ -220,7 +220,7 @@ export default function HomePage() {
         ) : (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {/* Flatten children categories for direct quick navigation */}
-            {categories.flatMap((cat) => (cat.children?.length ? cat.children : [cat])).map((cat) => (
+            {(categories || []).flatMap((cat) => (cat.children?.length ? cat.children : [cat])).map((cat) => (
               <Link
                 key={cat.id}
                 to={`/products?category=${cat.id}`}
@@ -287,7 +287,7 @@ export default function HomePage() {
           />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {recommended.map((prod) => (
+            {(recommended || []).map((prod) => (
               <ProductCard key={prod.id} product={prod} />
             ))}
           </div>
@@ -327,7 +327,7 @@ export default function HomePage() {
           <EmptyState title="No trending products currently available" />
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {trending.map((prod) => (
+            {(trending || []).map((prod) => (
               <ProductCard key={prod.id} product={prod} />
             ))}
           </div>

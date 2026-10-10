@@ -57,7 +57,7 @@ function FilterSidebarContent({
             All Categories
           </button>
 
-          {categoriesTree.map((parent) => (
+          {(categoriesTree || []).map((parent) => (
             <div key={parent.id} className="space-y-1 pt-1">
               <button
                 type="button"
@@ -537,7 +537,7 @@ export default function ProductsPage() {
             ) : (
               <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                  {productsData.items.map((prod) => (
+                  {(productsData?.items || []).map((prod) => (
                     <ProductCard key={prod.id} product={prod} />
                   ))}
                 </div>
