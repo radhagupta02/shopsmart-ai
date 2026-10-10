@@ -53,7 +53,7 @@
 - [ ] A1 UI kit, layout, login, Home, Products (Dev A)
 - [ ] B1 assistant UI on mocks (Dev B)
 - [x] C1 seed, auth, catalog APIs (Dev C)
-- [ ] D1 ingestion and documents API (Dev D)
+- [x] D1 ingestion and documents API (Dev D)
 - [ ] SYNC lunch sync (all)
 - [ ] A2 product detail, cart, wishlist (Dev A)
 - [ ] B2 knowledge base page (Dev B)

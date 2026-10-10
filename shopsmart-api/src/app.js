@@ -17,6 +17,7 @@ app.use((req, res, next) => {
 import authRouter from './routes/auth.js';
 import productsRouter from './routes/products.js';
 import categoriesRouter from './routes/categories.js';
+import documentsRouter from './routes/documents.js';
 
 // Empty routers for now
 const cartRouter = express.Router();
@@ -24,7 +25,6 @@ const wishlistRouter = express.Router();
 const ordersRouter = express.Router();
 const preferencesRouter = express.Router();
 const assistantRouter = express.Router();
-const documentsRouter = express.Router();
 const aiLogsRouter = express.Router();
 
 app.use('/api/auth', authRouter);
