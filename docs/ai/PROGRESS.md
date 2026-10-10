@@ -2,6 +2,7 @@
 
 ## Decisions
 (date - decision - why)  Record here: OQ answers, provider + embedding dimension, Node/Express versions, JWT lifetime, final confidence thresholds, signed-off [PROPOSED] items.
+- 2026-10-10 - Node v22.19.0, npm 10.9.3 confirmed on dev machine.
 
 ## Open questions (copy of the pack's section 1.3; mark each ANSWERED with the date)
 - [ ] OQ-1 Node/Express accepted by organizers
@@ -20,13 +21,21 @@
 
 ## Blockers
 (phase - problem - what was tried)
+- P0-A - Browser agent Playwright driver download fails (404 for playwright-1.57.0-win32_x64.zip); manual browser verification needed for full visual testing.
 
 ## Packages added
 (package - version - added by - phase)
+- react - 19.3.0 - Dev A - P0-A (Vite template)
+- react-dom - 19.3.0 - Dev A - P0-A (Vite template)
+- react-router-dom - 7.18.4 - Dev A - P0-A
+- tailwindcss - 4.3.3 - Dev A - P0-A
+- @tailwindcss/vite - 4.3.3 - Dev A - P0-A
+- @vitejs/plugin-react - (Vite template devDep) - Dev A - P0-A
+- vite - 8.3.4 (devDep) - Dev A - P0-A
 
 ## Phase status (tick tasks inside each phase as you go)
 - [ ] P0-ALL contract sign-off (all)
-- [ ] P0-A frontend scaffold (Dev A)
+- [x] P0-A frontend scaffold (Dev A) — All 13 routes registered, build passes, dev server serves, mock system ready.
 - [ ] P0-B mocks and fixtures (Dev B)
 - [ ] P0-C backend scaffold and schema (Dev C)
 - [ ] P0-D pgvector and AI client spike (Dev D)
@@ -51,4 +60,5 @@
 - [ ] OPT-OPS optional ops dashboard / low-stock agent (only if ahead)
 
 ## Current focus per dev
-A: -   B: -   C: -   D: -
+A: P0-A done, ready for A1   B: -   C: -   D: -
+
