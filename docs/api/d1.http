@@ -1,0 +1,130 @@
+### Admin Login to get token
+# @name login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@demo.com",
+  "password": "ShopSmart123!"
+}
+
+### Upload MD Document
+POST http://localhost:5000/api/documents
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="version"
+
+2026.1
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="effectiveDate"
+
+2026-01-01
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="category"
+
+General
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="region"
+
+GLOBAL
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="title"
+
+Test MD Doc
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test.md"
+Content-Type: text/markdown
+
+# Test
+This is a test MD doc.
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Upload JSON Document
+POST http://localhost:5000/api/documents
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="version"
+
+2026.1
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="effectiveDate"
+
+2026-01-01
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="category"
+
+General
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="region"
+
+GLOBAL
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test.json"
+Content-Type: application/json
+
+[{"title":"Test JSON","details":"This is a test JSON doc."}]
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Upload PDF Document
+POST http://localhost:5000/api/documents
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="version"
+
+2026.1
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="effectiveDate"
+
+2026-01-01
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="category"
+
+General
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="region"
+
+GLOBAL
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test.pdf"
+Content-Type: application/pdf
+
+%PDF-1.4... (Mocked Binary Data)
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Upload Wrong Type (415 Unsupported)
+POST http://localhost:5000/api/documents
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="version"
+
+2026.1
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="effectiveDate"
+
+2026-01-01
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="category"
+
+General
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="region"
+
+GLOBAL
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="test.txt"
+Content-Type: text/plain
+
+Unsupported type.
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### List Documents
+GET http://localhost:5000/api/documents
+Authorization: Bearer {{login.response.body.token}}

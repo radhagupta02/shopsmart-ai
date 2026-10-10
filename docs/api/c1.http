@@ -1,0 +1,50 @@
+### Login Basic User
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "basic@demo.com",
+  "password": "ShopSmart123!"
+}
+
+### Login Prime User
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "prime@demo.com",
+  "password": "ShopSmart123!"
+}
+
+### Login Premium User
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "premium@demo.com",
+  "password": "ShopSmart123!"
+}
+
+### Login Admin User
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@demo.com",
+  "password": "ShopSmart123!"
+}
+
+### Get Categories
+GET http://localhost:5000/api/categories
+
+### Get Products (All)
+GET http://localhost:5000/api/products
+
+### Get Products with invalid sort
+GET http://localhost:5000/api/products?sort=invalid_sort
+
+### Get Products page beyond end
+GET http://localhost:5000/api/products?page=100
+
+### Get Hero Laptops (Laptops under 1000 with 16GB RAM)
+GET http://localhost:5000/api/products?category=2&maxPrice=1000&q=16GB

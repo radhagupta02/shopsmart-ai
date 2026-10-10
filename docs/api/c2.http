@@ -1,0 +1,97 @@
+### Login Prime User to get token
+# @name login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "prime@demo.com",
+  "password": "ShopSmart123!"
+}
+
+### Get Preferences (defaults)
+GET http://localhost:5000/api/users/me/preferences
+Authorization: Bearer {{login.response.body.token}}
+
+### Update Preferences
+PUT http://localhost:5000/api/users/me/preferences
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "categories": [2],
+  "budgetMin": 500,
+  "budgetMax": 1500
+}
+
+### Add to Wishlist (idempotent)
+POST http://localhost:5000/api/wishlist
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "productId": "LAP103"
+}
+
+### Add to Wishlist Again (idempotent check)
+POST http://localhost:5000/api/wishlist
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "productId": "LAP103"
+}
+
+### Add to Cart
+POST http://localhost:5000/api/cart/items
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "productId": "LAP103",
+  "quantity": 2
+}
+
+### Update Cart Quantity
+PUT http://localhost:5000/api/cart/items/LAP103
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "quantity": 3
+}
+
+### Remove from Cart
+DELETE http://localhost:5000/api/cart/items/LAP103
+Authorization: Bearer {{login.response.body.token}}
+
+### Add to Cart again for order
+POST http://localhost:5000/api/cart/items
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "productId": "LAP104",
+  "quantity": 1
+}
+
+### Place Order
+POST http://localhost:5000/api/orders
+Authorization: Bearer {{login.response.body.token}}
+
+### Get Orders
+GET http://localhost:5000/api/orders
+Authorization: Bearer {{login.response.body.token}}
+
+### Login Basic User
+# @name basicLogin
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "basic@demo.com",
+  "password": "ShopSmart123!"
+}
+
+### Try to read prime user's order (should be 404 for security)
+GET http://localhost:5000/api/orders/ORD-000001
+Authorization: Bearer {{basicLogin.response.body.token}}
