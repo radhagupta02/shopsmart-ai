@@ -6,7 +6,7 @@
 - OQ-1: Organizers confirmed Node.js + Express is accepted.
 - OQ-2: Provider = Google Gemini API (AI Studio). LLM = gemini-1.5-flash. Embedding Model = text-embedding-004. Embedding Dimension N = 768.
 - OQ-9: Node >= 20. Express 5.3.0. Postgres image: pgvector/pgvector:pg16.
-- Decisions (2026-10-10): Module system is ESM. Postgres vector index is HNSW. JWT lifetime is 24h.
+- Decisions (2026-10-10): Module system is ESM. Postgres vector index is HNSW. JWT lifetime is 24h. Fallback activated for embeddings: Since Docker and pgvector cannot be run locally, we will store embeddings as arrays and compute cosine similarity in Node for the small demo set.
 
 
 ## Open questions (copy of the pack's section 1.3; mark each ANSWERED with the date)
@@ -42,13 +42,14 @@
 - dotenv (18.0.7) - Dev C - P0-C
 - pino (10.4.0) - Dev C - P0-C
 - pdfkit (0.20.2) - Dev C - P0-C
+- @google/generative-ai (0.24.1) - Dev D - P0-D
 
 ## Phase status (tick tasks inside each phase as you go)
 - [ ] P0-ALL contract sign-off (all)
 - [ ] P0-A frontend scaffold (Dev A)
 - [ ] P0-B mocks and fixtures (Dev B)
 - [x] P0-C backend scaffold and schema (Dev C)
-- [ ] P0-D pgvector and AI client spike (Dev D)
+- [x] P0-D pgvector and AI client spike (Dev D)
 - [ ] A1 UI kit, layout, login, Home, Products (Dev A)
 - [ ] B1 assistant UI on mocks (Dev B)
 - [ ] C1 seed, auth, catalog APIs (Dev C)
