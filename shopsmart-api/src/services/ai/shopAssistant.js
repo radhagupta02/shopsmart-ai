@@ -8,24 +8,24 @@ export const handleShopRequest = async (userId, message, history = [], userTier)
   
   try {
     const prefs = await getPreferences(userId);
-    const catRes = await query(\`SELECT id, name FROM categories\`);
+    const catRes = await query(`SELECT id, name FROM categories`);
     const validCategoryIds = new Set(catRes.rows.map(c => c.id));
-    const categoriesText = catRes.rows.map(c => \`\${c.id}: \${c.name}\`).join(', ');
+    const categoriesText = catRes.rows.map(c => `${c.id}: ${c.name}`).join(', ');
 
-    const extractionPrompt = \`
+    const extractionPrompt = `
 You are ShopSmart's AI shopping assistant. Extract the user's intent.
 Available Categories:
-\${categoriesText}
+${categoriesText}
 
 User preferences (fallback if not specified): 
-Brands: \${prefs.brands.join(', ')}
-Budget Range: \${prefs.budgetMin || 0} to \${prefs.budgetMax || 'unlimited'}
+Brands: ${prefs.brands.join(', ')}
+Budget Range: ${prefs.budgetMin || 0} to ${prefs.budgetMax || 'unlimited'}
 
 History of conversation:
-\${history.map(h => \`\${h.role}: \${h.content}\`).join('\\n')}
+${history.map(h => `${h.role}: ${h.content}`).join('\n')}
 
 Latest User Message:
-\${message}
+${message}
 
 You must extract:
 - summary: A short summary of what the user is looking for.
@@ -37,7 +37,7 @@ You must extract:
 
 Reply EXACTLY with this JSON format:
 { "summary": "...", "categoryId": number | null, "budget": number | null, "useCase": "...", "mustHaveSpecs": [...], "brandHints": [...] }
-    \`;
+    `;
 
     const extractionResult = await chatJson([{ role: 'user', content: extractionPrompt }], { 
       temperature: 0, 
@@ -64,17 +64,17 @@ Reply EXACTLY with this JSON format:
       };
     }
 
-    let sql = \`SELECT id, name, description, brand, price, rating, stock_qty as "stockQty", specs, images[1] as "imageUrl",
+    let sql = `SELECT id, name, description, brand, price, rating, stock_qty as "stockQty", specs, images[1] as "imageUrl",
                CASE WHEN stock_qty = 0 THEN 'OUT_OF_STOCK' WHEN stock_qty <= 5 THEN 'LOW_STOCK' ELSE 'IN_STOCK' END as availability
-               FROM products WHERE category_id = $1 AND price <= $2 AND stock_qty > 0\`;
+               FROM products WHERE category_id = $1 AND price <= $2 AND stock_qty > 0`;
     const params = [categoryId, budget];
 
     const validOps = new Set(['>=', '<=', '=']);
     
-    const keysRes = await query(\`
+    const keysRes = await query(`
       SELECT DISTINCT jsonb_object_keys(specs) as key 
       FROM products WHERE category_id = $1
-    \`, [categoryId]);
+    `, [categoryId]);
     const validKeys = new Set(keysRes.rows.map(r => r.key.toLowerCase()));
 
     const validSpecs = (mustHaveSpecs || []).filter(s => s && s.key && validKeys.has(s.key.toLowerCase()) && validOps.has(s.op));
@@ -85,10 +85,10 @@ Reply EXACTLY with this JSON format:
       params.push(isNum ? parseFloat(spec.value) : spec.value.toString());
       
       if (isNum) {
-        sql += \` AND (specs->>'\${spec.key.toLowerCase()}')::numeric \${spec.op} $\${paramIdx}\`;
+        sql += ` AND (specs->>'${spec.key.toLowerCase()}')::numeric ${spec.op} $${paramIdx}`;
       } else {
         if (spec.op === '=') {
-          sql += \` AND lower(specs->>'\${spec.key.toLowerCase()}') = lower($\${paramIdx})\`;
+          sql += ` AND lower(specs->>'${spec.key.toLowerCase()}') = lower($${paramIdx})`;
         }
       }
     });
@@ -101,18 +101,18 @@ Reply EXACTLY with this JSON format:
         interpretedRequirement: summary,
         budget,
         recommendations: [],
-        clarifyingQuestion: \`I couldn't find any products in that category under $\${budget} that meet all your requirements. Could we increase the budget or adjust the specifications?\`,
+        clarifyingQuestion: `I couldn't find any products in that category under $${budget} that meet all your requirements. Could we increase the budget or adjust the specifications?`,
         latencyMs: Date.now() - start
       };
     }
 
-    const useCaseWords = useCase ? useCase.toLowerCase().split(/\\W+/) : [];
+    const useCaseWords = useCase ? useCase.toLowerCase().split(/W+/) : [];
     const brandHintsLower = (brandHints || []).map(b => b.toLowerCase());
     const prefBrands = (prefs.brands || []).map(b => b.toLowerCase());
     
     candidates.forEach(c => {
       let score = 0;
-      const text = \`\${c.name} \${c.brand} \${c.description || ''}\`.toLowerCase();
+      const text = `${c.name} ${c.brand} ${c.description || ''}`.toLowerCase();
       
       useCaseWords.forEach(w => { if (w.length > 2 && text.includes(w)) score += 1; });
       brandHintsLower.forEach(b => { if (text.includes(b)) score += 3; });
@@ -124,21 +124,21 @@ Reply EXACTLY with this JSON format:
     candidates.sort((a, b) => b._score - a._score);
     const top3 = candidates.slice(0, 3);
 
-    const explanationPrompt = \`
+    const explanationPrompt = `
 You are ShopSmart's AI shopping assistant. Explain why these products are recommended.
 Use only the provided data. Give one short sentence (no marketing fluff) per product.
 If a product id doesn't match the list below, drop it.
 
 Candidates:
-\${JSON.stringify(top3.map(c => ({ id: c.id, name: c.name, price: c.price, specs: c.specs })), null, 2)}
+${JSON.stringify(top3.map(c => ({ id: c.id, name: c.name, price: c.price, specs: c.specs })), null, 2)}
 
 User's Request:
-\${summary}
-UseCase: \${useCase}
+${summary}
+UseCase: ${useCase}
 
 Reply exactly with JSON format:
 { "reasons": [{ "productId": "...", "reason": "..." }] }
-    \`;
+    `;
 
     const explainResult = await chatJson([{ role: 'user', content: explanationPrompt }], { temperature: 0.3 });
     const reasonsMap = new Map();
@@ -149,7 +149,7 @@ Reply exactly with JSON format:
     const recommendations = top3.map(c => ({
       productId: c.id,
       productName: c.name,
-      reason: reasonsMap.get(c.id) || \`Meets requirements for \${c.name} with key specs matching your need.\`,
+      reason: reasonsMap.get(c.id) || `Meets requirements for ${c.name} with key specs matching your need.`,
       availability: c.availability
     }));
 

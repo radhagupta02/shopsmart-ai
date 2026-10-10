@@ -21,17 +21,17 @@ export const route = async (message) => {
   }
   
   try {
-    const prompt = \`
+    const prompt = `
 Classify the user's message into one of these intents:
 - POLICY: Questions about returns, shipping, warranties, or store policies.
 - SHOP: Looking to buy products, asking for recommendations, or searching.
 - ORDER: Checking the status of an existing order.
 - UNKNOWN: Anything else.
 
-Message: "\${message}"
+Message: "${message}"
 
 Reply with JSON: { "intent": "POLICY" | "SHOP" | "ORDER" | "UNKNOWN" }
-\`;
+`;
     
     const result = await chatJson([{ role: 'user', content: prompt }], {
       temperature: 0,

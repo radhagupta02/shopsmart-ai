@@ -19,16 +19,16 @@ export const handleOrderStatus = async (userId, message) => {
       };
     }
     
-    let reply = \`Order \${orderData.orderId} is currently \${orderData.status}.\`;
+    let reply = `Order ${orderData.orderId} is currently ${orderData.status}.`;
     
     if (orderData.latestEvent) {
-      reply += \` Latest update: \${orderData.latestEvent.status} at \${new Date(orderData.latestEvent.eventTime || orderData.latestEvent.createdAt).toLocaleString()}.\`;
+      reply += ` Latest update: ${orderData.latestEvent.status} at ${new Date(orderData.latestEvent.eventTime || orderData.latestEvent.createdAt).toLocaleString()}.`;
     }
     
     if (orderData.items && orderData.items.length > 0) {
-      reply += \`\\nItems in this order:\`;
+      reply += `nItems in this order:`;
       orderData.items.forEach(item => {
-        reply += \`\\n- \${item.quantity}x \${item.productName} ($\${item.unitPrice})\`;
+        reply += `n- ${item.quantity}x ${item.productName} ($${item.unitPrice})`;
       });
     }
     

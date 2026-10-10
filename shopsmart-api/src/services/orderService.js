@@ -18,7 +18,7 @@ export const generateMockEvents = (status, createdAt = new Date()) => {
   
   if (status === 'PLACED') {
     allStatuses.forEach(s => {
-      events.push({ status: s, note: \`Order \${s.toLowerCase()}\`, eventTime: new Date(baseTime + offsets[s]).toISOString() });
+      events.push({ status: s, note: `Order ${s.toLowerCase()}`, eventTime: new Date(baseTime + offsets[s]).toISOString() });
     });
   }
 
@@ -26,10 +26,10 @@ export const generateMockEvents = (status, createdAt = new Date()) => {
 };
 
 export const getOrderById = async (orderId, userId, isAdmin = false) => {
-  const orderRes = await query(\`
+  const orderRes = await query(`
     SELECT id, user_id, status, total, shipping_estimate as "shippingEstimate", created_at as "createdAt"
     FROM orders WHERE id = $1
-  \`, [orderId]);
+  `, [orderId]);
 
   if (orderRes.rows.length === 0) throw new AppError('Order not found', 404);
   const order = orderRes.rows[0];
@@ -38,19 +38,19 @@ export const getOrderById = async (orderId, userId, isAdmin = false) => {
     throw new AppError('Order not found', 404);
   }
 
-  const itemsRes = await query(\`
+  const itemsRes = await query(`
     SELECT o.product_id as "productId", p.name, o.quantity, o.unit_price as "unitPrice"
     FROM order_items o
     JOIN products p ON o.product_id = p.id
     WHERE o.order_id = $1
-  \`, [orderId]);
+  `, [orderId]);
 
-  const eventsRes = await query(\`
+  const eventsRes = await query(`
     SELECT status, note, event_time as "eventTime"
     FROM order_events
     WHERE order_id = $1 AND event_time <= NOW()
     ORDER BY event_time ASC
-  \`, [orderId]);
+  `, [orderId]);
 
   const status = eventsRes.rows.length > 0 ? eventsRes.rows[eventsRes.rows.length - 1].status : order.status;
 
@@ -72,45 +72,45 @@ export const placeOrder = async (userId, userTier) => {
     }
 
     const productIds = cart.items.map(i => i.productId);
-    const lockedProducts = await client.query(\`SELECT id, stock_qty FROM products WHERE id = ANY($1) FOR UPDATE\`, [productIds]);
+    const lockedProducts = await client.query(`SELECT id, stock_qty FROM products WHERE id = ANY($1) FOR UPDATE`, [productIds]);
     const stockMap = {};
     lockedProducts.rows.forEach(p => stockMap[p.id] = p.stock_qty);
 
     for (const item of cart.items) {
       const available = stockMap[item.productId];
       if (available === undefined || available < item.quantity) {
-        throw new AppError(\`Insufficient stock for product \${item.productId}\`, 409, [{ field: item.productId, message: \`Only \${available || 0} left in stock\` }]);
+        throw new AppError(`Insufficient stock for product ${item.productId}`, 409, [{ field: item.productId, message: `Only ${available || 0} left in stock` }]);
       }
     }
 
     for (const item of cart.items) {
-      await client.query(\`UPDATE products SET stock_qty = stock_qty - $1 WHERE id = $2\`, [item.quantity, item.productId]);
+      await client.query(`UPDATE products SET stock_qty = stock_qty - $1 WHERE id = $2`, [item.quantity, item.productId]);
     }
 
     const { total, shippingEstimate } = cart;
-    const orderRes = await client.query(\`
+    const orderRes = await client.query(`
       INSERT INTO orders (user_id, status, total, shipping_estimate)
       VALUES ($1, $2, $3, $4) RETURNING id
-    \`, [userId, 'PLACED', total, shippingEstimate]);
+    `, [userId, 'PLACED', total, shippingEstimate]);
     
     const orderId = orderRes.rows[0].id;
     createdOrderId = orderId;
 
     for (const item of cart.items) {
-      await client.query(\`
+      await client.query(`
         INSERT INTO order_items (order_id, product_id, quantity, unit_price)
         VALUES ($1, $2, $3, $4)
-      \`, [orderId, item.productId, item.quantity, item.unitPrice]);
+      `, [orderId, item.productId, item.quantity, item.unitPrice]);
     }
 
-    await client.query(\`DELETE FROM cart_items WHERE user_id = $1\`, [userId]);
+    await client.query(`DELETE FROM cart_items WHERE user_id = $1`, [userId]);
 
     const events = generateMockEvents('PLACED', new Date());
     for (const ev of events) {
-      await client.query(\`
+      await client.query(`
         INSERT INTO order_events (order_id, status, note, event_time)
         VALUES ($1, $2, $3, $4)
-      \`, [orderId, ev.status, ev.note, ev.eventTime]);
+      `, [orderId, ev.status, ev.note, ev.eventTime]);
     }
   });
 
@@ -121,21 +121,21 @@ export const getOrders = async (userId, page = 1, size = 12) => {
   const limit = Math.min(parseInt(size) || 12, 50);
   const offset = (Math.max(parseInt(page) || 1, 1) - 1) * limit;
 
-  const countRes = await query(\`SELECT COUNT(*) FROM orders WHERE user_id = $1\`, [userId]);
+  const countRes = await query(`SELECT COUNT(*) FROM orders WHERE user_id = $1`, [userId]);
   const totalItems = parseInt(countRes.rows[0].count);
 
-  const res = await query(\`
+  const res = await query(`
     SELECT o.id, o.status, o.total, o.created_at as "createdAt",
            (SELECT COALESCE(SUM(quantity), 0) FROM order_items WHERE order_id = o.id) as "itemCount"
     FROM orders o
     WHERE o.user_id = $1
     ORDER BY o.created_at DESC
     LIMIT $2 OFFSET $3
-  \`, [userId, limit, offset]);
+  `, [userId, limit, offset]);
 
   const items = [];
   for (const row of res.rows) {
-    const ev = await query(\`SELECT status FROM order_events WHERE order_id = $1 AND event_time <= NOW() ORDER BY event_time DESC LIMIT 1\`, [row.id]);
+    const ev = await query(`SELECT status FROM order_events WHERE order_id = $1 AND event_time <= NOW() ORDER BY event_time DESC LIMIT 1`, [row.id]);
     const currentStatus = ev.rows.length > 0 ? ev.rows[0].status : row.status;
     items.push({ ...row, status: currentStatus, itemCount: parseInt(row.itemCount) });
   }
@@ -149,11 +149,11 @@ export const getOrders = async (userId, page = 1, size = 12) => {
 };
 
 export const getOrderStatusForUser = async (userId, orderId = null) => {
-  let q = \`SELECT id FROM orders WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1\`;
+  let q = `SELECT id FROM orders WHERE user_id = $1 ORDER BY created_at DESC LIMIT 1`;
   let params = [userId];
 
   if (orderId) {
-    q = \`SELECT id FROM orders WHERE user_id = $1 AND id = $2\`;
+    q = `SELECT id FROM orders WHERE user_id = $1 AND id = $2`;
     params.push(orderId);
   }
 

@@ -21,7 +21,7 @@ export const askPolicy = async (req, res, next) => {
       latencyMs: ragResult.latencyMs
     });
     
-    logger.info(\`AI POLICY | provider=gemini | model=gemini-1.5-flash | latencyMs=\${ragResult.latencyMs}\`);
+    logger.info(`AI POLICY | provider=gemini | model=gemini-1.5-flash | latencyMs=${ragResult.latencyMs}`);
 
     res.json({
       answer: ragResult.answer,
@@ -50,7 +50,7 @@ export const shop = async (req, res, next) => {
       latencyMs: shopResult.latencyMs
     });
     
-    logger.info(\`AI SHOP | provider=gemini | model=gemini-1.5-flash | latencyMs=\${shopResult.latencyMs}\`);
+    logger.info(`AI SHOP | provider=gemini | model=gemini-1.5-flash | latencyMs=${shopResult.latencyMs}`);
 
     res.json({
       interpretedRequirement: shopResult.interpretedRequirement,

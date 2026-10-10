@@ -11,8 +11,8 @@ router.use(requireRole('ADMIN'));
 const logsSchema = {
   query: z.object({
     type: z.enum(['POLICY', 'SHOP']).optional(),
-    page: z.string().regex(/^\\d+$/).optional(),
-    size: z.string().regex(/^\\d+$/).optional()
+    page: z.string().regex(/^d+$/).optional(),
+    size: z.string().regex(/^d+$/).optional()
   })
 };
 

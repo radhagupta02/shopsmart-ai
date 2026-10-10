@@ -1,4 +1,6 @@
-import pdfParse from 'pdf-parse';
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const pdfParse = require('pdf-parse');
 
 export const parsePdf = async (buffer) => {
   const options = {
