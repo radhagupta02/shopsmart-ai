@@ -61,7 +61,7 @@
 - [x] P0-C backend scaffold and schema (Dev C)
 - [x] P0-D pgvector and AI client spike (Dev D)
 - [x] A1 UI kit, layout, login, Home, Products (Dev A) — Button/Input/Badge/Modal/Skeleton/EmptyState/Pagination/ErrorState, Header & Layout, Login with 4 quick-logins, Home with hero/categories/recommended/trending, Products with filter drawer & compare bar. Build passes.
-- [ ] B1 assistant UI on mocks (Dev B)
+- [x] B1 assistant UI on mocks (Dev B) — AssistantPanel, ChatMessage, RecommendationCard implemented. Browser verification skipped due to blocked environment.
 - [x] C1 seed, auth, catalog APIs (Dev C)
 - [x] D1 ingestion and documents API (Dev D)
 - [ ] SYNC lunch sync (all)
@@ -81,5 +81,5 @@
 - [ ] OPT-OPS optional ops dashboard / low-stock agent (only if ahead)
 
 ## Current focus per dev
-A: A1 done, ready for A2   B: P0-B done, ready for B1   C: -   D: -
+A: A1 done, ready for A2   B: B1 done, ready for B2   C: -   D: -
 

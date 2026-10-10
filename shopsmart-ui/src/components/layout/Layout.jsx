@@ -2,6 +2,7 @@ import React from 'react';
 import CompareBar from '../products/CompareBar.jsx';
 import { CompareProvider } from '../../context/CompareContext.jsx';
 import { useAssistant } from '../../context/AssistantContext.jsx';
+import AssistantPanel from '../assistant/AssistantPanel.jsx';
 
 /**
  * Main Layout wrapper providing CompareProvider, CompareBar,
@@ -25,7 +26,9 @@ export default function Layout({ children }) {
           id="assistant-panel-slot"
           aria-live="polite"
           className={isOpen ? 'assistant-open' : 'assistant-closed'}
-        />
+        >
+          <AssistantPanel />
+        </div>
       </div>
     </CompareProvider>
   );
