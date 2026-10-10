@@ -7,9 +7,8 @@ const pool = new pg.Pool({
   connectionString: env.DATABASE_URL
 });
 
-pool.on('connect', async (client) => {
-  await pgvector.registerType(client);
-});
+// Await pgvector registration globally on the pool to avoid concurrent query race conditions on connect
+await pgvector.registerType(pool);
 
 pool.on('error', (err) => {
   logger.error('Unexpected error on idle client', err);

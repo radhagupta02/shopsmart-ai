@@ -14,5 +14,5 @@ export const errorHandler = (err, req, res, next) => {
   }
 
   logger.error(err);
-  return res.status(500).json({ error: 'Internal server error', details: [] });
+  return res.status(500).json({ error: err.message, stack: err.stack, details: [] });
 };
