@@ -14,6 +14,17 @@ const askSchema = {
   })
 };
 
+const shopSchema = {
+  body: z.object({
+    message: z.string().min(1).max(1000),
+    history: z.array(z.object({
+      role: z.enum(['user', 'assistant']),
+      content: z.string()
+    })).optional()
+  })
+};
+
 router.post('/ask', validate(askSchema), assistantController.askPolicy);
+router.post('/shop', validate(shopSchema), assistantController.shop);
 
 export default router;
