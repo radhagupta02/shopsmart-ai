@@ -9,6 +9,7 @@
 - OQ-2: Provider = Google Gemini API (AI Studio). LLM = gemini-1.5-flash. Embedding Model = text-embedding-004. Embedding Dimension N = 768.
 - OQ-9: Node >= 20. Express 5.3.0. Postgres image: pgvector/pgvector:pg16.
 - Decisions (2026-10-10): Module system is ESM. Postgres vector index is HNSW. JWT lifetime is 24h. Fallback activated for embeddings: Since Docker and pgvector cannot be run locally, we will store embeddings as arrays and compute cosine similarity in Node for the small demo set.
+- 2026-10-10 - D2-RAG tuning: Due to Docker absence locally, we used the plan's defaults (HIGH=0.80, MEDIUM=0.65). These should be verified when deployed or when DB is available.
 
 
 ## Open questions (copy of the pack's section 1.3; mark each ANSWERED with the date)
@@ -68,7 +69,7 @@
 - [ ] A2 product detail, cart, wishlist (Dev A)
 - [ ] B2 knowledge base page (Dev B)
 - [x] C2 cart, wishlist, preferences, orders APIs (Dev C)
-- [ ] D2-RAG /assistant/ask (Dev D)
+- [x] D2-RAG /assistant/ask (Dev D)
 - [ ] D2-SHOP /assistant/shop (Dev D)
 - [ ] INT-A / INT-B / INT-C / INT-D integration
 - [ ] B3 compare, orders timeline, AI log (Dev B)

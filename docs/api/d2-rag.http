@@ -1,0 +1,103 @@
+### Login Basic User
+# @name login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "basic@demo.com",
+  "password": "ShopSmart123!"
+}
+
+### Login Admin User
+# @name adminLogin
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@demo.com",
+  "password": "ShopSmart123!"
+}
+
+### Q1: Can I return a laptop after 25 days?
+POST http://localhost:5000/api/assistant/ask
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "question": "Can I return a laptop after 25 days?"
+}
+
+### Q2: What is the return window for a gaming laptop?
+POST http://localhost:5000/api/assistant/ask
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "question": "What is the return window for a gaming laptop?"
+}
+
+### Q3: Do I pay for return shipping?
+POST http://localhost:5000/api/assistant/ask
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "question": "Do I pay for return shipping?"
+}
+
+### Q4: How long does a refund take to process?
+POST http://localhost:5000/api/assistant/ask
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "question": "How long does a refund take to process?"
+}
+
+### Q5: What is the warranty for Premium members?
+POST http://localhost:5000/api/assistant/ask
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "question": "What is the warranty for Premium members?"
+}
+
+### Out-of-scope question
+POST http://localhost:5000/api/assistant/ask
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "question": "How do I bake a chocolate cake?"
+}
+
+### Near-miss question
+POST http://localhost:5000/api/assistant/ask
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "question": "Do you sell desktop computers?"
+}
+
+### Empty question (400)
+POST http://localhost:5000/api/assistant/ask
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "question": ""
+}
+
+### No token (401)
+POST http://localhost:5000/api/assistant/ask
+Content-Type: application/json
+
+{
+  "question": "Do I pay for return shipping?"
+}
+
+### View AI Logs (Admin)
+GET http://localhost:5000/api/aiLogs
+Authorization: Bearer {{adminLogin.response.body.token}}

@@ -23,8 +23,8 @@ import cartRouter from './routes/cart.js';
 import wishlistRouter from './routes/wishlist.js';
 import ordersRouter from './routes/orders.js';
 import preferencesRouter from './routes/preferences.js';
-const assistantRouter = express.Router();
-const aiLogsRouter = express.Router();
+import assistantRouter from './routes/assistant.js';
+import aiLogsRouter from './routes/aiLogs.js';
 
 app.use('/api/auth', authRouter);
 app.use('/api/products', productsRouter);
