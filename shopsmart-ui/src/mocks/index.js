@@ -4,29 +4,28 @@
  * When VITE_USE_MOCKS=true, every API call first passes through handle().
  * If handle() returns undefined the call falls through to the real network.
  *
- * LIVE_ENDPOINTS: method+path patterns forced to the real API even in mock mode,
- * enabling incremental switching as backend endpoints go live.
- *
- * P0-B fills in the actual mock handlers.
+ * All endpoints from CONTRACT Section 5 are registered via ROUTE_TABLE.
  */
+
+import { ROUTE_TABLE } from './handlers/index.js';
 
 /** Endpoints that bypass mocks and go to the real API (method + path regex). */
 const LIVE_ENDPOINTS = [
   // Example: { method: 'GET', pattern: /^\/health$/ },
 ];
 
-/** Mock handlers keyed by 'METHOD /path' or regex-matched. P0-B adds entries. */
-const handlers = {};
+/** Dynamic handlers registered via registerMock() */
+const dynamicHandlers = {};
 
 /**
- * Register a mock handler.
+ * Register a dynamic mock handler.
  * @param {string} method - HTTP method (GET, POST, etc.)
  * @param {string|RegExp} path - path string or regex
  * @param {Function} handler - (params) => response data | undefined
  */
 export function registerMock(method, path, handler) {
   const key = `${method.toUpperCase()} ${path}`;
-  handlers[key] = { method: method.toUpperCase(), path, handler };
+  dynamicHandlers[key] = { method: method.toUpperCase(), path, handler };
 }
 
 /**
@@ -36,6 +35,12 @@ function isLive(method, path) {
   return LIVE_ENDPOINTS.some(
     (ep) => ep.method === method.toUpperCase() && ep.pattern.test(path),
   );
+}
+
+/** Artificial delay so loading states and skeletons are visible (300-600ms). */
+function delay(ms) {
+  const duration = ms ?? (300 + Math.random() * 300);
+  return new Promise((resolve) => setTimeout(resolve, duration));
 }
 
 /**
@@ -51,16 +56,15 @@ export async function handle(method, path, opts = {}) {
   // Force live endpoints to skip mocks
   if (isLive(m, path)) return undefined;
 
-  // Try exact match first
+  // 1. Check dynamic handlers first (exact match)
   const exactKey = `${m} ${path}`;
-  if (handlers[exactKey]) {
-    // Simulate network delay so skeletons are visible
+  if (dynamicHandlers[exactKey]) {
     await delay();
-    return handlers[exactKey].handler(opts);
+    return dynamicHandlers[exactKey].handler(opts);
   }
 
-  // Try regex matches
-  for (const entry of Object.values(handlers)) {
+  // 2. Check dynamic handlers (regex)
+  for (const entry of Object.values(dynamicHandlers)) {
     if (entry.method !== m) continue;
     if (entry.path instanceof RegExp && entry.path.test(path)) {
       await delay();
@@ -69,19 +73,24 @@ export async function handle(method, path, opts = {}) {
     }
   }
 
+  // 3. Match against ROUTE_TABLE
+  for (const route of ROUTE_TABLE) {
+    if (route.method !== m) continue;
+
+    // String exact match
+    if (typeof route.pattern === 'string' && route.pattern === path) {
+      await delay();
+      return route.handler({ ...opts, params: {} });
+    }
+
+    // RegExp pattern match
+    if (route.pattern instanceof RegExp && route.pattern.test(path)) {
+      await delay();
+      const match = path.match(route.pattern);
+      return route.handler({ ...opts, params: match?.groups || {}, match });
+    }
+  }
+
   // No mock found — fall through to real network
   return undefined;
 }
-
-/** Artificial delay so loading states are visible (100-300ms). */
-function delay(ms) {
-  const duration = ms ?? 100 + Math.random() * 200;
-  return new Promise((resolve) => setTimeout(resolve, duration));
-}
-
-/**
- * Dummy handler to prove mock fallthrough works during P0-A acceptance.
- * GET /health returns { status: 'ok', mock: true }.
- * Remove or override in P0-B.
- */
-registerMock('GET', '/health', () => ({ status: 'ok', mock: true }));

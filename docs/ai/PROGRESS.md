@@ -36,7 +36,7 @@
 ## Phase status (tick tasks inside each phase as you go)
 - [ ] P0-ALL contract sign-off (all)
 - [x] P0-A frontend scaffold (Dev A) — All 13 routes registered, build passes, dev server serves, mock system ready.
-- [ ] P0-B mocks and fixtures (Dev B)
+- [x] P0-B mocks and fixtures (Dev B) — All CONTRACT section 5 endpoints implemented with exact shapes, AI hero/vague and RAG responses verified, 54/54 checks passed, build passes.
 - [ ] P0-C backend scaffold and schema (Dev C)
 - [ ] P0-D pgvector and AI client spike (Dev D)
 - [ ] A1 UI kit, layout, login, Home, Products (Dev A)
@@ -60,5 +60,5 @@
 - [ ] OPT-OPS optional ops dashboard / low-stock agent (only if ahead)
 
 ## Current focus per dev
-A: P0-A done, ready for A1   B: -   C: -   D: -
+A: P0-A done, ready for A1   B: P0-B done, ready for B1   C: -   D: -
 
