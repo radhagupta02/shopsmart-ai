@@ -65,7 +65,7 @@
 - [x] C1 seed, auth, catalog APIs (Dev C)
 - [x] D1 ingestion and documents API (Dev D)
 - [ ] SYNC lunch sync (all)
-- [ ] A2 product detail, cart, wishlist (Dev A)
+- [x] A2 product detail, cart, wishlist (Dev A) — ProductDetail, Cart, Wishlist, CartContext, WishlistContext implemented. Build passes.
 - [ ] B2 knowledge base page (Dev B)
 - [x] C2 cart, wishlist, preferences, orders APIs (Dev C)
 - [ ] D2-RAG /assistant/ask (Dev D)
@@ -81,5 +81,5 @@
 - [ ] OPT-OPS optional ops dashboard / low-stock agent (only if ahead)
 
 ## Current focus per dev
-A: A1 done, ready for A2   B: B1 done, ready for B2   C: -   D: -
+A: A2 done, ready for INT-A   B: B1 done, ready for B2   C: -   D: -
 
