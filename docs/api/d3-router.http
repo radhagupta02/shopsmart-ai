@@ -1,0 +1,72 @@
+### Login Prime User
+# @name login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "prime@demo.com",
+  "password": "ShopSmart123!"
+}
+
+### POLICY: Keyword matched
+POST http://localhost:5000/api/assistant/chat
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "message": "What is the return policy for laptops?"
+}
+
+### POLICY: LLM matched
+POST http://localhost:5000/api/assistant/chat
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "message": "How many days do I have to send something back?"
+}
+
+### SHOP: Keyword matched
+POST http://localhost:5000/api/assistant/chat
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "message": "Can you suggest a laptop under $1000?"
+}
+
+### SHOP: LLM matched
+POST http://localhost:5000/api/assistant/chat
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "message": "I want to buy a new smartphone for gaming."
+}
+
+### ORDER: Keyword matched
+POST http://localhost:5000/api/assistant/chat
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "message": "where is my order?"
+}
+
+### ORDER: LLM matched
+POST http://localhost:5000/api/assistant/chat
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "message": "When will my package arrive?"
+}
+
+### UNKNOWN: Fallback
+POST http://localhost:5000/api/assistant/chat
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "message": "Write a python script to sort an array."
+}

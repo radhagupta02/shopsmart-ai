@@ -9,6 +9,8 @@
 - OQ-2: Provider = Google Gemini API (AI Studio). LLM = gemini-1.5-flash. Embedding Model = text-embedding-004. Embedding Dimension N = 768.
 - OQ-9: Node >= 20. Express 5.3.0. Postgres image: pgvector/pgvector:pg16.
 - Decisions (2026-10-10): Module system is ESM. Postgres vector index is HNSW. JWT lifetime is 24h. Fallback activated for embeddings: Since Docker and pgvector cannot be run locally, we will store embeddings as arrays and compute cosine similarity in Node for the small demo set.
+- 2026-10-10 - D2-RAG tuning: Due to Docker absence locally, we used the plan's defaults (HIGH=0.80, MEDIUM=0.65). These should be verified when deployed or when DB is available.
+- 2026-10-10 - D2-SHOP rule: When there are no candidates matching the budget and specs, the API returns an empty recommendations list and a generated clarifyingQuestion (e.g., "I couldn't find any products in that category under $X that meet all your requirements...") directly without calling the LLM again.
 
 
 ## Open questions (copy of the pack's section 1.3; mark each ANSWERED with the date)
@@ -16,8 +18,8 @@
 - [x] OQ-2 LLM + embedding provider, API key holder, embedding dimension N
 - [ ] OQ-3 Demo local or deployed
 - [ ] OQ-4 Scope sign-off and Profile page owner
-- [ ] OQ-5 How the UI reaches the intent router
-- [ ] OQ-6 Order-status tool shape and trigger
+- [x] OQ-5 How the UI reaches the intent router (2026-10-10: POST /assistant/chat endpoint approved and built)
+- [x] OQ-6 Order-status tool shape and trigger (2026-10-10: tool deployed inside router)
 - [ ] OQ-7 Laptop Return Policy preloaded or uploaded live
 - [ ] OQ-8 Automated tests: yes or no
 - [x] OQ-9 Versions (Node, Express, Postgres image tag)
@@ -68,11 +70,11 @@
 - [x] A2 product detail, cart, wishlist (Dev A) — ProductDetail, Cart, Wishlist, CartContext, WishlistContext implemented. Build passes.
 - [x] B2 knowledge base page (Dev B) — KnowledgePage, UploadZone, DocumentTable, MetadataForm implemented.
 - [x] C2 cart, wishlist, preferences, orders APIs (Dev C)
-- [ ] D2-RAG /assistant/ask (Dev D)
-- [ ] D2-SHOP /assistant/shop (Dev D)
+- [x] D2-RAG /assistant/ask (Dev D)
+- [x] D2-SHOP /assistant/shop (Dev D)
 - [ ] INT-A / INT-B / INT-C / INT-D integration
 - [ ] B3 compare, orders timeline, AI log (Dev B)
-- [ ] D3-ROUTER intent router and order-status tool (Dev D)
+- [x] D3-ROUTER intent router and order-status tool (Dev D)
 - [ ] PX-PROFILE preferences page (owner per OQ-4)
 - [ ] QA bug bash (all)
 - [ ] C3 demo data, reset, backup video (Dev C)

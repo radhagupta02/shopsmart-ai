@@ -1,0 +1,57 @@
+### Login Prime User
+# @name login
+POST http://localhost:5000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "prime@demo.com",
+  "password": "ShopSmart123!"
+}
+
+### Hero Query
+POST http://localhost:5000/api/assistant/shop
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "message": "I need a high-performance laptop for software development and some gaming, under $1000."
+}
+
+### No category/budget => clarifying question
+POST http://localhost:5000/api/assistant/shop
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "message": "I need a laptop for software development and some gaming."
+}
+
+### History lowers budget
+POST http://localhost:5000/api/assistant/shop
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "message": "Actually, can you find something cheaper?",
+  "history": [
+    { "role": "user", "content": "I need a high-performance laptop for software development and some gaming, under $1000." },
+    { "role": "assistant", "content": "Here are some laptops under $1000." }
+  ]
+}
+
+### Empty message (400)
+POST http://localhost:5000/api/assistant/shop
+Authorization: Bearer {{login.response.body.token}}
+Content-Type: application/json
+
+{
+  "message": ""
+}
+
+### No token (401)
+POST http://localhost:5000/api/assistant/shop
+Content-Type: application/json
+
+{
+  "message": "I need a laptop under $1000."
+}
